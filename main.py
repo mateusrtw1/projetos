@@ -73,7 +73,6 @@ with st.sidebar:
         for filme, info in list(st.session_state.catalogo_filmes.items()):
             with st.expander(f"🎬 {filme}"):
 
-            # Estados de edição para cada campo
                 if f"edit_ano_{filme}" not in st.session_state:
                     st.session_state[f"edit_ano_{filme}"] = False
                 if f"edit_genero_{filme}" not in st.session_state:
@@ -81,7 +80,6 @@ with st.sidebar:
                 if f"edit_nota_{filme}" not in st.session_state:
                     st.session_state[f"edit_nota_{filme}"] = False
 
-                # Ano
                 if st.session_state[f"edit_ano_{filme}"]:
                     novo_ano = st.number_input("📅 Novo Ano:", value=info['ano'], key=f"novo_ano_{filme}", min_value=1900, max_value=datetime.datetime.now().year)
                     if st.button("💾 Salvar Ano", key=f"salvar_ano_{filme}"):
@@ -95,7 +93,6 @@ with st.sidebar:
                     if st.button("✏️ Editar Ano", key=f"editar_ano_{filme}"):
                         st.session_state[f"edit_ano_{filme}"] = True
 
-                # Gênero
                 if st.session_state[f"edit_genero_{filme}"]:
                     novo_genero = st.selectbox("🎭 Novo Gênero:", st.session_state.generos, index=st.session_state.generos.index(info['genero']), key=f"novo_genero_{filme}")
                     if st.button("💾 Salvar Gênero", key=f"salvar_genero_{filme}"):
@@ -109,7 +106,6 @@ with st.sidebar:
                     if st.button("✏️ Editar Gênero", key=f"editar_genero_{filme}"):
                         st.session_state[f"edit_genero_{filme}"] = True
 
-                # Nota
                 if st.session_state[f"edit_nota_{filme}"]:
                     nova_nota = st.slider("⭐ Nova Nota:", 0, 5, value=info['nota'], key=f"nova_nota_{filme}")
                     if st.button("💾 Salvar Nota", key=f"salvar_nota_{filme}"):
@@ -142,3 +138,4 @@ if st.button("💾 Salvar Filme"):
 
     else:
         st.error("⚠️ Por favor, preencha todos os campos antes de salvar.")
+
