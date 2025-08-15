@@ -3,7 +3,6 @@ import datetime
 import json
 
 def carregar_dados():
-
     try:
         with open("catalogo_filmes.json", "r") as arquivo:
             st.session_state.catalogo_filmes = json.load(arquivo)
@@ -69,10 +68,11 @@ with tab4:
 
 with st.sidebar:
     st.header("📚 Filmes Cadastrados")
+    if not st.session_state.catalogo_filmes:
+        st.sidebar.info("📭 Nenhum filme cadastrado ainda.")
     if st.session_state.catalogo_filmes:
         for filme, info in list(st.session_state.catalogo_filmes.items()):
             with st.expander(f"🎬 {filme}"):
-
                 if f"edit_ano_{filme}" not in st.session_state:
                     st.session_state[f"edit_ano_{filme}"] = False
                 if f"edit_genero_{filme}" not in st.session_state:
@@ -119,6 +119,11 @@ with st.sidebar:
                     if st.button("✏️ Editar Nota", key=f"editar_nota_{filme}"):
                         st.session_state[f"edit_nota_{filme}"] = True
 
+                if st.button("🗑️ Excluir Filme", key=f"excluir_{filme}"):
+                    del st.session_state.catalogo_filmes[filme]
+                    del st.session_state.filmes[filme]
+                    salvar_dados()
+                    st.success(f"Filme '{filme} excluido com sucesso!")
 if st.button("💾 Salvar Filme"):
     if titulo and ano and genero and nota is not None:
         st.session_state.catalogo_filmes[titulo] = {
@@ -135,7 +140,7 @@ if st.button("💾 Salvar Filme"):
 
         salvar_dados()
         st.success(f"🎉 Filme '{titulo}' adicionado com sucesso!")
-
     else:
         st.error("⚠️ Por favor, preencha todos os campos antes de salvar.")
+
 
